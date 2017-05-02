@@ -7,9 +7,9 @@ color_string = r.content
 
 
 import serial
-# ser = serial.Serial('90600') # open first serial port
-# print(ser.name)      # check which port was really used
-# ser.write(str(color_string) )     # write a string
-# ser.close()             # close port
+ser = serial.Serial('/dev/cu.usbmodem1411', 115200)
+print(ser.name)      # check which port was really used
+ser.write(str(color_string) )     # write a string
+ser.close()             # close port
 
 print(color_string)

@@ -5,7 +5,6 @@ import re
 import json
 stop_word_file = "SmartStopList.txt"
 import spacy
-import serial
 
 
 # App config.
