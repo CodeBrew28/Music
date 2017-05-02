@@ -89,15 +89,10 @@ def get_json(songname):
     palette = {}
 
     for song in song_list:
-        word_count = 0
-        colors = {}
         colors_min = {"red": 1, "orange": 1,"yellow": 1,"green": 1,"blue": 1,"indigo": 1,"purple": 1}
-        colors_max = {"red": 0, "orange": 0,"yellow": 0,"green": 0,"blue": 0,"indigo": 0,"purple": 0}
-
 
         
         for word in songs[song]:
-            word_count += 1
             w2 = nlp(word)
 
             w1 = nlp(unicode("red"))
@@ -108,13 +103,11 @@ def get_json(songname):
 
             w1 = nlp(unicode("orange"))
             similarity_rating = w1.similarity(w2)
-            # colors["orange"] = similarity_rating / songs[song][word]
             if (similarity_rating < colors_min["orange"]):
                 colors_min["orange"] = similarity_rating / songs[song][word]
 
             w1 = nlp(unicode("yellow"))
             similarity_rating = w1.similarity(w2)
-            # colors["yellow"] = similarity_rating / songs[song][word]
             if (similarity_rating < colors_min["yellow"]):
                 colors_min["yellow"] = similarity_rating / songs[song][word]
 
@@ -128,18 +121,12 @@ def get_json(songname):
             similarity_rating = w1.similarity(w2)
             if (similarity_rating < colors_min["blue"]):
                 colors_min["blue"] = similarity_rating / songs[song][word]
-            # if (similarity_rating > colors_max["blue"]):
-            #     colors_max["blue"] = similarity_rating / songs[song][word]
-            # colors["blue"] = similarity_rating / songs[song][word]
-
 
             w1 = nlp(unicode("indigo"))
             similarity_rating = w1.similarity(w2)
             if (similarity_rating < colors_min['indigo']):
                 colors_min["indigo"] = similarity_rating / songs[song][word]
-            # if (similarity_rating > colors_max['indigo']):
-            #     colors_max["indigo"] = similarity_rating / songs[song][word]
-            # colors["indigo"] = similarity_rating / songs[song][word]
+
 
             w1 = nlp(unicode("purple"))
             similarity_rating = w1.similarity(w2)
