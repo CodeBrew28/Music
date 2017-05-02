@@ -91,68 +91,77 @@ def get_json(songname):
     for song in song_list:
         word_count = 0
         colors = {}
-                
+        colors_min = {"red": 1, "orange": 1,"yellow": 1,"green": 1,"blue": 1,"indigo": 1,"purple": 1}
+        colors_max = {"red": 0, "orange": 0,"yellow": 0,"green": 0,"blue": 0,"indigo": 0,"purple": 0}
+
+
+        
         for word in songs[song]:
             word_count += 1
             w2 = nlp(word)
 
             w1 = nlp(unicode("red"))
             similarity_rating = w1.similarity(w2)
-            colors["red"] = similarity_rating / songs[song][word]
+            if (similarity_rating < colors_min['red']):
+                colors_min["red"] = similarity_rating / songs[song][word]
+
 
             w1 = nlp(unicode("orange"))
             similarity_rating = w1.similarity(w2)
-            colors["orange"] = similarity_rating / songs[song][word]
+            # colors["orange"] = similarity_rating / songs[song][word]
+            if (similarity_rating < colors_min["orange"]):
+                colors_min["orange"] = similarity_rating / songs[song][word]
 
             w1 = nlp(unicode("yellow"))
             similarity_rating = w1.similarity(w2)
-            colors["yellow"] = similarity_rating / songs[song][word]
+            # colors["yellow"] = similarity_rating / songs[song][word]
+            if (similarity_rating < colors_min["yellow"]):
+                colors_min["yellow"] = similarity_rating / songs[song][word]
+
 
             w1 = nlp(unicode("green"))
             similarity_rating = w1.similarity(w2)
-            colors["green"] = similarity_rating / songs[song][word]
-                    
+            if (similarity_rating < colors_min["green"]):
+                colors_min["green"] = similarity_rating / songs[song][word]
+
             w1 = nlp(unicode("blue"))
             similarity_rating = w1.similarity(w2)
-            colors["blue"] = similarity_rating / songs[song][word]
+            if (similarity_rating < colors_min["blue"]):
+                colors_min["blue"] = similarity_rating / songs[song][word]
+            # if (similarity_rating > colors_max["blue"]):
+            #     colors_max["blue"] = similarity_rating / songs[song][word]
+            # colors["blue"] = similarity_rating / songs[song][word]
+
 
             w1 = nlp(unicode("indigo"))
             similarity_rating = w1.similarity(w2)
-            colors["indigo"] = similarity_rating / songs[song][word]
+            if (similarity_rating < colors_min['indigo']):
+                colors_min["indigo"] = similarity_rating / songs[song][word]
+            # if (similarity_rating > colors_max['indigo']):
+            #     colors_max["indigo"] = similarity_rating / songs[song][word]
+            # colors["indigo"] = similarity_rating / songs[song][word]
 
             w1 = nlp(unicode("purple"))
             similarity_rating = w1.similarity(w2)
-            colors["purple"] = similarity_rating / songs[song][word]
+            if (similarity_rating < colors_min['purple']):
+                colors_min["purple"] = similarity_rating / songs[song][word]
+                palette['colors'] = colors_min
+                print(palette)
 
-            colors['red'] /= word_count
-            colors['orange'] /= word_count
-            colors['yellow'] /= word_count
-            colors['green'] /= word_count
-            colors['blue'] /= word_count
-            colors['indigo'] /= word_count
-            colors['purple'] /= word_count
+        palette['colors'] = colors_min
+        my_colors = [  palette['colors']['red']  , palette['colors']['orange'] , palette['colors']['yellow'], palette['colors']['green'] , palette['colors']['blue'], palette['colors']['indigo'],  palette['colors']['purple'] ] 
 
-            palette['colors'] = colors
-
-            my_colors = [  palette['colors']['red']  , palette['colors']['orange'] , palette['colors']['yellow'], palette['colors']['green'] , palette['colors']['blue'], palette['colors']['indigo'],  palette['colors']['purple'] ] 
-
-            color_string = ""
-            my_max = max(my_colors)
-            for color in my_colors:
-                color = int(  (color / my_max) * 19 )
-                color_string += str(color) 
-                color_string += ","
-            color_string = color_string[:len(color_string) - 1]
-            return color_string
+        color_string = ""
+        my_max = max(my_colors)
+        for color in my_colors:
+            color = int(  (color / my_max) * 9 )
+            color_string += str(color) 
+            color_string += ","
+        color_string = color_string[:len(color_string) - 1]
+        return color_string
     return "5555555"
 
 
-
-# class ReusableForm(Form):
-    # name = TextField('Song Name:', validators=[validators.required()])
-    # email = TextField('Email:', validators=[validators.required(), validators.Length(min=6, max=35)])
-    # password = TextField('Password:', validators=[validators.required(), validators.Length(min=3, max=35)])
- 
 
 @app.route("/<songname>", methods=['GET', 'POST'])
 def get_data(songname):
@@ -160,110 +169,6 @@ def get_data(songname):
 
 
 
-
-
-
-
-# @app.route("/", methods=['GET', 'POST'])
-# def hello():
-#     form = ReusableForm(request.form)
- 
-#     print form.errors
-#     if request.method == 'POST':
-#         name=request.form['name']
-
-#         if form.validate():
-#             songs = {}
-
-#             def query(query):
-#                 for i in range(1950, 2015):
-#                     with open('data/' + str(i) + '.json') as data_file:  
-#                         data_set = json.load(data_file)
-#                         for i in range(0, len(data_set)):
-#                             data = [data_set[i]]
-#                             if( query == data[0]['title']  ):
-#                                 songs[data[0]['title'] ] = getKeyWords(data[0]['lyrics'])
-#                                 return
-#                 flash('Song Not Found')
-#                 # print("Song not found")
-            
-#             query(name)
-
-            
-
-#             song_list = (songs.keys())
-#             nlp = spacy.load('en')
-#             palette = {}
-
-#             for song in song_list:
-#                 word_count = 0
-#                 colors = {}
-                
-#                 for word in songs[song]:
-#                     word_count += 1
-#                     w2 = nlp(word)
-
-#                     w1 = nlp(unicode("red"))
-#                     similarity_rating = w1.similarity(w2)
-#                     colors["red"] = similarity_rating / songs[song][word]
-
-#                     w1 = nlp(unicode("orange"))
-#                     similarity_rating = w1.similarity(w2)
-#                     colors["orange"] = similarity_rating / songs[song][word]
-
-#                     w1 = nlp(unicode("yellow"))
-#                     similarity_rating = w1.similarity(w2)
-#                     colors["yellow"] = similarity_rating / songs[song][word]
-
-#                     w1 = nlp(unicode("green"))
-#                     similarity_rating = w1.similarity(w2)
-#                     colors["green"] = similarity_rating / songs[song][word]
-                    
-#                     w1 = nlp(unicode("blue"))
-#                     similarity_rating = w1.similarity(w2)
-#                     colors["blue"] = similarity_rating / songs[song][word]
-
-#                     w1 = nlp(unicode("indigo"))
-#                     similarity_rating = w1.similarity(w2)
-#                     colors["indigo"] = similarity_rating / songs[song][word]
-
-#                     w1 = nlp(unicode("purple"))
-#                     similarity_rating = w1.similarity(w2)
-#                     colors["purple"] = similarity_rating / songs[song][word]
-
-#                 colors['red'] /= word_count
-#                 colors['orange'] /= word_count
-#                 colors['yellow'] /= word_count
-#                 colors['green'] /= word_count
-#                 colors['blue'] /= word_count
-#                 colors['indigo'] /= word_count
-#                 colors['purple'] /= word_count
-
-#                 palette['colors'] = colors
-
-#                 retur palette
-
-                # my_colors = [  palette['colors']['red']  , palette['colors']['orange'] , palette['colors']['yellow'], palette['colors']['green'] , palette['colors']['blue'], palette['colors']['indigo'],  palette['colors']['purple'] ] 
-
-                # color_string = ""
-                # my_max = max(my_colors)
-                # for color in my_colors:
-                #     color = int(  (color / my_max) * 9 )
-                #     color_string += str(color) 
-
-                # print(color_string)
-
-                
-                # flash('Searching ' + str(color_string))
-                # ser = serial.Serial('90600') # open first serial port
-                # print(ser.name)      # check which port was really used
-                # ser.write(str(color_string) )     # write a string
-                # ser.close()             # close port
-
-    #     else:
-    #         flash('Error: All the form fields are required. ')
- 
-    # return render_template('hello.html', form=form)
  
 if __name__ == "__main__":
     app.run()
